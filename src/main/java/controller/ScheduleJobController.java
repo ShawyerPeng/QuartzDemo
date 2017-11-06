@@ -49,8 +49,7 @@ public class ScheduleJobController {
                 if (null == trigger) {  // 不存在任务
                     scheduleJobService.insert(job);
                 } else {
-                    //scheduleJobService.update(job);
-                    scheduleJobService.insert(job);
+                    scheduleJobService.update(job);
                 }
             }
         } catch (SchedulerException e) {

@@ -21,6 +21,13 @@ Quartz 大致可分为三个主要的核心：
 3. 创建 Trigger。作用：配置定时时间
 4. 创建 SchedulerFactoryBean。作用：启动定时任务
 
+# 注意
+updateByPrimaryKey 对你注入的字段全部更新（不判断是否为 Null）
+updateByPrimaryKeySelective 会对字段进行判断再更新 (如果为 Null 就忽略更新)
+
+insert 就把所有值插入, 但是要注意加入数据库字段有 default,default 是不会起作用的
+insertSelective 不会忽略 default，只会插入不为null的字段
+
 # 实现 Demo
 创建 Job：具体的执行任务
 ```java

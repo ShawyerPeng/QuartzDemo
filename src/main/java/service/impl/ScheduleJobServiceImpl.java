@@ -42,7 +42,7 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
 
     public Integer insert(ScheduleJob scheduleJob) {
         ScheduleUtils.createScheduleJob(scheduler, scheduleJob);
-        return scheduleJobMapper.insert(scheduleJob);
+        return scheduleJobMapper.insertSelective(scheduleJob);
     }
 
     public Integer update(ScheduleJob scheduleJob) {
