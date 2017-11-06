@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 定义调用对象和调用对象的方法 -->
+    <bean id="jobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="quartz.SpringQtz"/>
+        <property name="group" value="job_work"/>
+        <property name="name" value="job_work_name"/>
+        <property name="durability" value="true"/>
+    </bean>
+
+    <!-- ======================== 调度触发器 ======================== -->
+    <bean id="cronTriggerBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="name" value="work_default_name"/>
+        <property name="group" value="work_default"/>
+        <property name="jobDetail" ref="jobDetail"/>
+        <!-- cron表达式 -->
+        <property name="cronExpression" value="0/20 * * * * ?"/>
+    </bean>
+
+    <!-- ======================== 调度工厂 ======================== -->
+    <!--<bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">-->
+        <!--&lt;!&ndash;<property name="dataSource" ref="datasource"/>&ndash;&gt;-->
+        <!--<property name="applicationContextSchedulerContextKey" value="applicationContext"/>-->
+        <!--<property name="configLocation" value="classpath:quartz/quartz.properties"/>-->
+        <!--&lt;!&ndash;启动时更新己存在的Job，这样就不用每次修改targetObject后删除qrtz_job_details表对应记录了&ndash;&gt;-->
+        <!--<property name="overwriteExistingJobs" value="true"/>-->
+        <!--<property name="triggers">-->
+            <!--<list>-->
+                <!--<ref bean="cronTriggerBean"/>-->
+            <!--</list>-->
+        <!--</property>-->
+        <!--<property name="jobDetails">-->
+            <!--<list>-->
+                <!--<ref bean="jobDetail"/>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!-- 这句话是为了实现在job中使用注解，注入service -->
+    <bean id="jobFactory" class="quartz.JobFactory"/>
+    <bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="jobFactory" ref="jobFactory"/>
+    </bean>
+</beans>
